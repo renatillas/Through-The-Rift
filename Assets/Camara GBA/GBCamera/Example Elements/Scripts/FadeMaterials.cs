@@ -1,66 +1,70 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-public class FadeMaterials : MonoBehaviour {
+namespace Camara_GBA.GBCamera.Example_Elements.Scripts
+{
+	public class FadeMaterials : MonoBehaviour {
 
-	public Material[] _materials;
-	public float _fadeAmountPerSecond;
+		[FormerlySerializedAs("_materials")] public Material[] materials;
+		[FormerlySerializedAs("_fadeAmountPerSecond")] public float fadeAmountPerSecond;
 	
 	
-	public IEnumerator FadeIn ()
-	{
-		bool complete = false;
-		
-		while (!complete)
+		public IEnumerator FadeIn ()
 		{
-			complete = true;
-			
-			for (int i = 0; i < _materials.Length; i++)
+			bool complete = false;
+		
+			while (!complete)
 			{
-				float fade = _materials[i].GetFloat ("_Fade");
-				
-				fade = Mathf.Min (1f, fade + (_fadeAmountPerSecond * Time.deltaTime));
-				if (fade < 1f)
-				{
-					complete = false;
-				}
-				
-				_materials[i].SetFloat ("_Fade", fade);
-			}
+				complete = true;
 			
-			yield return null;
+				for (int i = 0; i < materials.Length; i++)
+				{
+					float fade = materials[i].GetFloat ("_Fade");
+				
+					fade = Mathf.Min (1f, fade + (fadeAmountPerSecond * Time.deltaTime));
+					if (fade < 1f)
+					{
+						complete = false;
+					}
+				
+					materials[i].SetFloat ("_Fade", fade);
+				}
+			
+				yield return null;
+			}
+		
+			yield break;
+		
 		}
-		
-		yield break;
-		
-	}
 	
-	public IEnumerator FadeOut ()
-	{
-		bool complete = false;
-		
-		while (!complete)
+		public IEnumerator FadeOut ()
 		{
-			complete = true;
-			
-			for (int i = 0; i < _materials.Length; i++)
+			bool complete = false;
+		
+			while (!complete)
 			{
-				float fade = _materials[i].GetFloat ("_Fade");
-				
-				fade = Mathf.Max (0f, fade - (_fadeAmountPerSecond * Time.deltaTime));
-				if (fade > 0)
-				{
-					complete = false;
-				}
-				
-				_materials[i].SetFloat ("_Fade", fade);
-			}
+				complete = true;
 			
-			yield return null;
+				for (int i = 0; i < materials.Length; i++)
+				{
+					float fade = materials[i].GetFloat ("_Fade");
+				
+					fade = Mathf.Max (0f, fade - (fadeAmountPerSecond * Time.deltaTime));
+					if (fade > 0)
+					{
+						complete = false;
+					}
+				
+					materials[i].SetFloat ("_Fade", fade);
+				}
+			
+				yield return null;
+			}
+		
+			yield break;
+		
 		}
-		
-		yield break;
-		
-	}
 	
+	}
 }

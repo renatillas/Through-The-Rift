@@ -1,33 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.src
+namespace src
 {
     public class SwordManager : MonoBehaviour
     {
-        [SerializeField]
-        private float weaponDelay;
-        [SerializeField]
-        Animator animator;
+        [SerializeField] private float weaponDelay;
+        [SerializeField] private Animator animator;
 
-        float internalTimer;
-        Collider swordCollider;
+        private float _internalTimer;
+        private Collider _swordCollider;
+        private static readonly int SwordAttack = Animator.StringToHash("SwordAttack");
 
         private void Awake()
         {
-            swordCollider = GetComponent<Collider>();
+            _swordCollider = GetComponent<Collider>();
         }
 
         private void Start()
         {
-            internalTimer = 0;
+            _internalTimer = 0;
         }
 
         private void Update()
         {
-            internalTimer -= Time.deltaTime;
-            if (internalTimer < 0f)
+            _internalTimer -= Time.deltaTime;
+            if (_internalTimer < 0f)
             {
                 StartAttack();
             }
@@ -35,14 +32,14 @@ namespace Assets.src
 
         private void StartAttack()
         {
-            internalTimer = weaponDelay;
-            swordCollider.enabled = true;
-            animator.SetTrigger("SwordAttack");
+            _internalTimer = weaponDelay;
+            _swordCollider.enabled = true;
+            animator.SetTrigger(SwordAttack);
         }
 
         public void EndAttack()
         {
-            swordCollider.enabled = false;
+            _swordCollider.enabled = false;
         }
 
     }

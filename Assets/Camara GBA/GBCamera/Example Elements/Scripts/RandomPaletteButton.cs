@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace RogueNoodle
+namespace Camara_GBA.GBCamera.Example_Elements.Scripts
 {
 namespace GBCamera
 {
@@ -9,8 +10,8 @@ namespace GBCamera
 public class RandomPaletteButton : MonoBehaviour
 {
 	
-	public FadeMaterials _fadeMaterials;
-	public RandomPalette _randomPalette;
+	[FormerlySerializedAs("_fadeMaterials")] public FadeMaterials fadeMaterials;
+	[FormerlySerializedAs("_randomPalette")] public RandomPalette randomPalette;
 	private bool _switchingPalette = false;
 	
 	public void OnChooseRandomPalette ()
@@ -25,9 +26,9 @@ public class RandomPaletteButton : MonoBehaviour
 	public IEnumerator ChooseRandomPalette ()
 	{
 		_switchingPalette = true;
-		yield return _fadeMaterials.StartCoroutine (_fadeMaterials.FadeOut ());
-		_randomPalette.SelectRandomPalette ();
-		yield return _fadeMaterials.StartCoroutine (_fadeMaterials.FadeIn());
+		yield return fadeMaterials.StartCoroutine (fadeMaterials.FadeOut ());
+		randomPalette.SelectRandomPalette ();
+		yield return fadeMaterials.StartCoroutine (fadeMaterials.FadeIn());
 		_switchingPalette = false;
 	}
 	

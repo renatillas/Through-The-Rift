@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.Serialization;
 
-namespace RogueNoodle
+namespace Camara_GBA.GBCamera.Example_Elements.Scripts
 {
 
 namespace GBCamera
@@ -9,23 +9,23 @@ namespace GBCamera
 
 public class Rotate : MonoBehaviour {
 
-	[Tooltip ("Axis of rotation - use 0 or 1 only")]
-	public Vector3 _rotationAxis = new Vector3 (0,1,0);
-	[Tooltip ("Speed of rotation in degrees per second")]
-	public float _rotationSpeed = 90;
+	[FormerlySerializedAs("_rotationAxis")] [Tooltip ("Axis of rotation - use 0 or 1 only")]
+	public Vector3 rotationAxis = new Vector3 (0,1,0);
+	[FormerlySerializedAs("_rotationSpeed")] [Tooltip ("Speed of rotation in degrees per second")]
+	public float rotationSpeed = 90;
 	
 	private Transform _transform;
-	
-	void Start () {
+
+	private void Start () {
 	
 		// cache the transform
 		_transform = transform;
 	}
-	
-	
-	void Update ()
+
+
+	private void Update ()
 	{
-		_transform.Rotate (_rotationAxis * _rotationSpeed * Time.deltaTime);
+		_transform.Rotate (rotationAxis * rotationSpeed * Time.deltaTime);
 	}
 }
 

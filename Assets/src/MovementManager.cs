@@ -1,36 +1,34 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.src
+namespace src
 {
     public class MovementManager : MonoBehaviour
     {
-        [SerializeField, Range(0, 10)]
-        float walkSpeed = 200f;
-        [SerializeField]
-        float jumpDelay = 1f;
-        [SerializeField]
-        float jumpForce;
+        [SerializeField, Range(0, 10)] private float walkSpeed = 200f;
+        [SerializeField] private float jumpDelay = 1f;
+        [SerializeField] private float jumpForce;
 
-        bool hasJumpDelay;
-        Rigidbody rb;
-        Animator animator;
+        private bool _hasJumpDelay;
+        private Rigidbody _rb;
+        private Animator _animator;
+        private static readonly int Speed = Animator.StringToHash("Speed");
+        private static readonly int Jump1 = Animator.StringToHash("Jump");
 
         private bool IsGrounded()
         {
             return Physics.CheckSphere(transform.position + Vector3.up * 0.1f, 0.2f);
         }
 
-        void Awake()
+        private void Awake()
         {
-            rb = GetComponent<Rigidbody>();
-            animator = GetComponent<Animator>();
+            _rb = GetComponent<Rigidbody>();
+            _animator = GetComponent<Animator>();
         }
 
-        void Update()
+        private void Update()
         {
-            animator.SetFloat("Speed", rb.velocity.magnitude);
+            _animator.SetFloat(Speed, _rb.velocity.magnitude);
         }
 
         public bool TryMove(Vector3 direction)
@@ -44,16 +42,16 @@ namespace Assets.src
             return false;
         }
 
-        void Move(Vector3 direction)
+        private void Move(Vector3 direction)
         {
             Vector3 velocity = walkSpeed * direction;
-            rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z);
+            _rb.velocity = new Vector3(velocity.x, _rb.velocity.y, velocity.z);
         }
 
 
         public bool TryJump()
         {
-            if (IsGrounded() && !hasJumpDelay)
+            if (IsGrounded() && !_hasJumpDelay)
             {
                 Jump(jumpForce);
                 return true;
@@ -61,18 +59,18 @@ namespace Assets.src
             return false;
         }
 
-        void Jump(float jumpForce)
+        private void Jump(float inputJumpForce)
         {
-            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-            hasJumpDelay = true;
-            animator.SetTrigger("Jump");
+            _rb.AddForce(transform.up * inputJumpForce, ForceMode.Impulse);
+            _hasJumpDelay = true;
+            _animator.SetTrigger(Jump1);
             StartCoroutine(YieldJumpDelay());
         }
 
-        IEnumerator YieldJumpDelay()
+        private IEnumerator YieldJumpDelay()
         {
             yield return new WaitForSeconds(jumpDelay);
-            hasJumpDelay = false;
+            _hasJumpDelay = false;
         }
     }
 }

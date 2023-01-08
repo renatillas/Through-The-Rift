@@ -1,31 +1,31 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.Serialization;
 
-namespace RogueNoodle
+namespace Camara_GBA.GBCamera.Example_Elements.Scripts
 {
 namespace GBCamera
 {
 
 public class RandomPalette : MonoBehaviour {
 
-	public Texture[] _palettes;
-	public Material[] _materials;
+	[FormerlySerializedAs("_palettes")] public Texture[] palettes;
+	[FormerlySerializedAs("_materials")] public Material[] materials;
 	private int _previousPaletteIndex = 0;
 	
 	public void SelectRandomPalette ()
 	{
-		if (_palettes.Length == 0 || _materials.Length == 0)
+		if (palettes.Length == 0 || materials.Length == 0)
 			return;
 		
 		int randomPaletteIndex = _previousPaletteIndex;
 		while (randomPaletteIndex == _previousPaletteIndex)
 		{
-			randomPaletteIndex = Random.Range (0, _palettes.Length);
+			randomPaletteIndex = Random.Range (0, palettes.Length);
 		}	
 		
-		for (int i = 0; i < _materials.Length; i++)
+		for (int i = 0; i < materials.Length; i++)
 		{
-			_materials[i].SetTexture ("_Palette", _palettes[randomPaletteIndex]);
+			materials[i].SetTexture ("_Palette", palettes[randomPaletteIndex]);
 		}
 		
 		_previousPaletteIndex = randomPaletteIndex;

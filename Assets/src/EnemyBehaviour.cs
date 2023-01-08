@@ -1,37 +1,35 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace Assets.src
+namespace src
 {
     public class EnemyBehaviour : MonoBehaviour
     {
-        [SerializeField]
-        Transform playerLocation;
+        [FormerlySerializedAs("playerLocation")] [SerializeField] private Transform playerTransform;
 
-        float playerHeight;
-        MovementManager movementManager;
+        private float _playerHeight;
+        private MovementManager _movementManager;
 
         private void Awake()
         {
-            movementManager = GetComponent<MovementManager>();
+            _movementManager = GetComponent<MovementManager>();
         }
 
         private void Update()
         {
-            playerHeight = transform.position.y;
+            _playerHeight = transform.position.y;
         }
 
         private void FixedUpdate()
         {
-            movementManager.TryMove(GetMoveDirection());
+            _movementManager.TryMove(GetMoveDirection());
             RotateFacingPlayer();
         }
 
         private void RotateFacingPlayer()
         {
-            transform.LookAt(new Vector3(playerLocation.position.x, playerHeight, playerLocation.position.z));
+            var position = playerTransform.position;
+            transform.LookAt(new Vector3(position.x, _playerHeight, position.z));
         }
 
         private void Attack()
@@ -39,22 +37,22 @@ namespace Assets.src
             Debug.Log("Enemy attacked player!");
         }
 
-        void OnCollisionStay(Collision collision)
+        private void OnCollisionStay(Collision collision)
         {
             if (collision.gameObject.CompareTag("Player"))
                 Attack();
         }
 
-        Vector3 GetMoveDirection()
+        private Vector3 GetMoveDirection()
         {
-            return (playerLocation.position - transform.position).normalized;
+            return (playerTransform.position - transform.position).normalized;
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Weapon"))
             {
-                print("Fui atacado!");
+                print("I was attacked!");
             }
         }
     }
