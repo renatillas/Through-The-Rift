@@ -2,20 +2,24 @@ using UnityEngine;
 
 namespace src
 {
-    public class EnemyBehaviour : MonoBehaviour
+    public class EnemyManager : MonoBehaviour
     {
-        [SerializeField] private Transform transformChase;
+        [SerializeField] private int maxHealth;
+        [SerializeField] private Transform playerTransform;
+        private int _hp;
+
         private MovementManager _movementManager;
-        private float _playerHeight;
+        private Rigidbody _rb;
 
         private void Awake()
         {
             _movementManager = GetComponent<MovementManager>();
+            _rb = GetComponent<Rigidbody>();
         }
 
-        private void Update()
+        private void Start()
         {
-            _playerHeight = transform.position.y;
+            _hp = maxHealth;
         }
 
         private void FixedUpdate()
@@ -30,18 +34,17 @@ namespace src
                 Attack();
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void TakeDamage(int damage)
         {
-            if (other.CompareTag("Weapon"))
-            {
-                print("I was attacked!");
-            }
+            _hp -= damage;
+            if (_hp < 1)
+                Destroy(gameObject);
         }
 
         private void RotateFacingPlayer()
         {
-            var position = transformChase.position;
-            transform.LookAt(new Vector3(position.x, _playerHeight, position.z));
+            var position = playerTransform.position;
+            transform.LookAt(new Vector3(position.x, 0.0f, position.z));
         }
 
         private void Attack()

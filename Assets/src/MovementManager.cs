@@ -51,7 +51,7 @@ namespace src
 
         private void Move(Vector3 direction)
         {
-            Vector3 velocity = speed * direction;
+            var velocity = speed * direction;
             _rb.velocity = new Vector3(velocity.x, _rb.velocity.y, velocity.z);
         }
 
