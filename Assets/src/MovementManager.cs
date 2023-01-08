@@ -5,13 +5,19 @@ namespace src
 {
     public class MovementManager : MonoBehaviour
     {
-        private static readonly int Speed = Animator.StringToHash("Speed");
-        private static readonly int Jump1 = Animator.StringToHash("Jump");
-        [SerializeField, Range(0, 10)] private float walkSpeed = 200f;
-        [SerializeField] private float jumpDelay = 1f;
-        [SerializeField] private float jumpForce;
-        private Animator _animator;
+        // Necesarios para optimizar el motor de animaciones.
+        private static readonly int SpeedHash = Animator.StringToHash("Speed");
+        private static readonly int JumpHash = Animator.StringToHash("Jump");
 
+        [Header("Walk settings")] [SerializeField, Range(0, 10)]
+        private float speed = 200f;
+
+        [Header("Jump settings")] [SerializeField]
+        private float jumpSecondsDelay = 1f;
+
+        [SerializeField] private float jumpForceMagnitude;
+
+        private Animator _animator;
         private bool _hasJumpDelay;
         private Rigidbody _rb;
 
@@ -23,7 +29,7 @@ namespace src
 
         private void Update()
         {
-            _animator.SetFloat(Speed, _rb.velocity.magnitude);
+            _animator.SetFloat(SpeedHash, _rb.velocity.magnitude);
         }
 
         private bool IsGrounded()
@@ -45,7 +51,7 @@ namespace src
 
         private void Move(Vector3 direction)
         {
-            Vector3 velocity = walkSpeed * direction;
+            Vector3 velocity = speed * direction;
             _rb.velocity = new Vector3(velocity.x, _rb.velocity.y, velocity.z);
         }
 
@@ -53,21 +59,21 @@ namespace src
         public bool TryJump()
         {
             if (!IsGrounded() || _hasJumpDelay) return false;
-            Jump(jumpForce);
+            Jump(jumpForceMagnitude);
             return true;
         }
 
-        private void Jump(float inputJumpForce)
+        private void Jump(float inputMagnitude)
         {
-            _rb.AddForce(transform.up * inputJumpForce, ForceMode.Impulse);
+            _rb.AddForce(transform.up * inputMagnitude, ForceMode.Impulse);
             _hasJumpDelay = true;
-            _animator.SetTrigger(Jump1);
+            _animator.SetTrigger(JumpHash);
             StartCoroutine(YieldJumpDelay());
         }
 
         private IEnumerator YieldJumpDelay()
         {
-            yield return new WaitForSeconds(jumpDelay);
+            yield return new WaitForSeconds(jumpSecondsDelay);
             _hasJumpDelay = false;
         }
     }

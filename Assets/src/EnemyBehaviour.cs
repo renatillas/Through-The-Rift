@@ -1,14 +1,12 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace src
 {
     public class EnemyBehaviour : MonoBehaviour
     {
-        [FormerlySerializedAs("playerLocation")] [SerializeField] private Transform playerTransform;
-
-        private float _playerHeight;
+        [SerializeField] private Transform transformChase;
         private MovementManager _movementManager;
+        private float _playerHeight;
 
         private void Awake()
         {
@@ -26,26 +24,10 @@ namespace src
             RotateFacingPlayer();
         }
 
-        private void RotateFacingPlayer()
-        {
-            var position = playerTransform.position;
-            transform.LookAt(new Vector3(position.x, _playerHeight, position.z));
-        }
-
-        private void Attack()
-        {
-            Debug.Log("Enemy attacked player!");
-        }
-
         private void OnCollisionStay(Collision collision)
         {
             if (collision.gameObject.CompareTag("Player"))
                 Attack();
-        }
-
-        private Vector3 GetMoveDirection()
-        {
-            return (playerTransform.position - transform.position).normalized;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -54,6 +36,22 @@ namespace src
             {
                 print("I was attacked!");
             }
+        }
+
+        private void RotateFacingPlayer()
+        {
+            var position = transformChase.position;
+            transform.LookAt(new Vector3(position.x, _playerHeight, position.z));
+        }
+
+        private void Attack()
+        {
+            Debug.Log("Enemy attacked player!");
+        }
+
+        private Vector3 GetMoveDirection()
+        {
+            return (transformChase.position - transform.position).normalized;
         }
     }
 }
