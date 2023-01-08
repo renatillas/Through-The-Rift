@@ -5,20 +5,15 @@ namespace src
 {
     public class MovementManager : MonoBehaviour
     {
+        private static readonly int Speed = Animator.StringToHash("Speed");
+        private static readonly int Jump1 = Animator.StringToHash("Jump");
         [SerializeField, Range(0, 10)] private float walkSpeed = 200f;
         [SerializeField] private float jumpDelay = 1f;
         [SerializeField] private float jumpForce;
+        private Animator _animator;
 
         private bool _hasJumpDelay;
         private Rigidbody _rb;
-        private Animator _animator;
-        private static readonly int Speed = Animator.StringToHash("Speed");
-        private static readonly int Jump1 = Animator.StringToHash("Jump");
-
-        private bool IsGrounded()
-        {
-            return Physics.CheckSphere(transform.position + Vector3.up * 0.1f, 0.2f);
-        }
 
         private void Awake()
         {
@@ -31,6 +26,11 @@ namespace src
             _animator.SetFloat(Speed, _rb.velocity.magnitude);
         }
 
+        private bool IsGrounded()
+        {
+            return Physics.CheckSphere(transform.position + Vector3.up * 0.1f, 0.2f);
+        }
+
         public bool TryMove(Vector3 direction)
         {
             if (IsGrounded())
@@ -39,6 +39,7 @@ namespace src
                 Move(direction);
                 return true;
             }
+
             return false;
         }
 
@@ -51,12 +52,9 @@ namespace src
 
         public bool TryJump()
         {
-            if (IsGrounded() && !_hasJumpDelay)
-            {
-                Jump(jumpForce);
-                return true;
-            }
-            return false;
+            if (!IsGrounded() || _hasJumpDelay) return false;
+            Jump(jumpForce);
+            return true;
         }
 
         private void Jump(float inputJumpForce)
