@@ -37,17 +37,13 @@ namespace src
             return Physics.CheckSphere(transform.position + Vector3.up * 0.1f, 0.2f);
         }
 
-        public bool TryMove(Vector3 direction)
-        {
-            Move(direction);
-            return true;
-        }
-
-        private void Move(Vector3 direction)
+        public void Move(Vector3 direction)
         {
             var velocity = speed * direction;
             _rb.AddForce(velocity, ForceMode.VelocityChange);
-            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, speed);
+            float yVelocity = _rb.velocity.y;
+            Vector3 clampedVelocity = Vector3.ClampMagnitude(_rb.velocity, speed);
+            _rb.velocity = new Vector3(clampedVelocity.x, yVelocity, clampedVelocity.z);
         }
 
 

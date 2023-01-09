@@ -49,7 +49,7 @@ namespace src
         private void FixedUpdate()
         {
             if (_stunt || IsDead) return;
-            _movementManager.TryMove(GetPlayerDirection());
+            _movementManager.Move(GetPlayerDirection());
             RotateFacingPlayer();
         }
 
@@ -83,8 +83,12 @@ namespace src
             _internalAttackTimer = attackDelay;
         }
 
-        private Vector3 GetPlayerDirection() =>
-            (_playerTransform.position - transform.position).normalized;
+        private Vector3 GetPlayerDirection()
+        {
+            Vector3 direction = (_playerTransform.position - transform.position).normalized;
+            direction.y = 0f;
+            return direction;
+        }
 
         private void ApplyKnockback(Vector3 direction, float forceMagnitude)
         {

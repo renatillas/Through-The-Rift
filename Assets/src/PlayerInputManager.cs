@@ -25,7 +25,7 @@ namespace src
                 _movementManager.TryJump();
 
             if (GetMoveDirection().sqrMagnitude > 0)
-                _movementManager.TryMove(GetMoveDirection());
+                _movementManager.Move(GetMoveDirection());
         }
 
         private Vector3 GetMoveDirection()
@@ -37,7 +37,8 @@ namespace src
         {
             var direction = GetMoveDirection();
             if (direction.sqrMagnitude >= 0.1)
-                body.rotation = Quaternion.Slerp(body.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
+                body.rotation = Quaternion.Slerp(body.rotation, Quaternion.LookRotation(direction),
+                    rotationSpeed * Time.deltaTime);
         }
     }
 }
