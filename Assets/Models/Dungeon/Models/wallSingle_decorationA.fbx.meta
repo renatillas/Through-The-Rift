@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 3f3a46b9d22ea3743ae16dd29a62bbca
+guid: b63a46096f5a2a04b96665a467921279
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone
+    second: {fileID: 2100000, guid: a85d58ebf946a6748adf0bd5a92f4f70, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: StoneDark
+    second: {fileID: 2100000, guid: 1e1eda9ab2cb70a4eba6dc3fa165da55, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -35,7 +45,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 3
+    meshCompression: 0
     addColliders: 1
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1

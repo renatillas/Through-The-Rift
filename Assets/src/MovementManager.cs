@@ -10,7 +10,7 @@ namespace src
         private static readonly int JumpHash = Animator.StringToHash("Jump");
 
         [Header("Walk settings")] [SerializeField, Range(0, 10)]
-        private float speed = 200f;
+        private float speed = 2f;
 
         [Header("Jump settings")] [SerializeField]
         private float jumpSecondsDelay = 1f;
@@ -39,42 +39,49 @@ namespace src
 
         public bool TryMove(Vector3 direction)
         {
-            if (IsGrounded())
-
-            {
-                Move(direction);
-                return true;
-            }
-
-            return false;
+            Move(direction);
+            return true;
         }
 
         private void Move(Vector3 direction)
         {
             var velocity = speed * direction;
-            _rb.velocity = new Vector3(velocity.x, _rb.velocity.y, velocity.z);
+            _rb.AddForce(velocity, ForceMode.VelocityChange);
+            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, speed);
         }
 
 
         public bool TryJump()
         {
             if (!IsGrounded() || _hasJumpDelay) return false;
-            Jump(jumpForceMagnitude);
+            BufferJump();
             return true;
         }
 
-        private void Jump(float inputMagnitude)
+        private void BufferJump()
         {
-            _rb.AddForce(transform.up * inputMagnitude, ForceMode.Impulse);
-            _hasJumpDelay = true;
-            _animator.SetTrigger(JumpHash);
             StartCoroutine(YieldJumpDelay());
+            _animator.SetTrigger(JumpHash);
+        }
+
+        private void Jump(float jumpNewtons)
+        {
+            // Impulse (Imp or J) = F * t [Newton * Second]
+            Vector3 force = (transform.up * jumpNewtons);
+            Vector3 imp = force * Time.fixedDeltaTime;
+            _rb.AddForce(imp, ForceMode.Impulse);
         }
 
         private IEnumerator YieldJumpDelay()
         {
+            _hasJumpDelay = true;
             yield return new WaitForSeconds(jumpSecondsDelay);
             _hasJumpDelay = false;
+        }
+
+        public void OnJumpTakeOff()
+        {
+            Jump(jumpForceMagnitude);
         }
     }
 }
