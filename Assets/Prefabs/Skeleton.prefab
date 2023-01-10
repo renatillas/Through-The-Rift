@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  rotationSpeed: 1500
   jumpSecondsDelay: 1
   jumpForceMagnitude: 2
 --- !u!114 &2251840517365989223
