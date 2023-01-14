@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CharacterScripts
 {
     [RequireComponent(typeof(Health))]
     public class Damageable : MonoBehaviour
     {
+        [SerializeField] private UnityEvent<int> onDamaged;
+
         private Health _health;
 
         private void Awake()
@@ -14,7 +17,9 @@ namespace CharacterScripts
 
         public void DealDamage(int damageAmount)
         {
-            _health.ChangeHealth(damageAmount);
+            Debug.Log($"{gameObject} has been dealt damage.");
+            _health.ChangeHealth(-damageAmount);
+            onDamaged.Invoke(damageAmount);
         }
     }
 }

@@ -5514,6 +5514,8 @@ GameObject:
   - component: {fileID: 643404416548190943}
   - component: {fileID: 643404416548190915}
   - component: {fileID: 643404416548190912}
+  - component: {fileID: 2006579991985343929}
+  - component: {fileID: 1081592340124044921}
   m_Layer: 2
   m_Name: sword_common
   m_TagString: Sword
@@ -5613,7 +5615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a599c747b3445d3a1bfa47f67817df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 5
 --- !u!114 &643404416548190912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5626,7 +5628,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d617083357b2439ca139940fa221c2bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delay: 2
+  delay: 0.1
+--- !u!114 &2006579991985343929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643404416548190941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 345eb411541545f394985dc0850601a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunSeconds: 0.5
+--- !u!114 &1081592340124044921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643404416548190941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c770197ac04efd8e162b79c00e0d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: 0
+  origin: {fileID: 0}
+  delay: 0
 --- !u!1 &643404416603875429
 GameObject:
   m_ObjectHideFlags: 0
@@ -5870,7 +5900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ab307c5ac6453397b7331a0568c052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpNewtons: 0
+  jumpNewtons: 4000
   jumpCooldown: 0
 --- !u!114 &643404416722613324
 MonoBehaviour:
@@ -5884,7 +5914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7307dde55244c4780bb4756746c2622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 0
+  startingHealth: 10
 --- !u!114 &643404416722613362
 MonoBehaviour:
   m_ObjectHideFlags: 0

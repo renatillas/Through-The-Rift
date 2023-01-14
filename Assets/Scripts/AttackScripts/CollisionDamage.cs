@@ -10,14 +10,14 @@ namespace AttackScripts
         private void OnTriggerEnter(Collider other)
         {
             var hitObject = other.gameObject;
-            TryDamageObject(hitObject);
+            DamageObject(hitObject);
         }
 
-        private void TryDamageObject(GameObject objectToDamage)
+        private void DamageObject(GameObject objectToDamage)
         {
             if (objectToDamage.TryGetComponent(out Damageable damageableObject))
             {
-                damageableObject.DealDamage(-damage);
+                damageableObject.DealDamage(damage);
             }
             else
             {

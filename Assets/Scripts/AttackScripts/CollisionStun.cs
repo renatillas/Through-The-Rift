@@ -5,23 +5,19 @@ namespace AttackScripts
 {
     public class CollisionStun : MonoBehaviour
     {
+        [SerializeField, Range(0, 3)] private float stunSeconds;
+
         private void OnTriggerEnter(Collider other)
         {
             var hitObject = other.gameObject;
-            TryStunObject(hitObject);
+            StunObject(hitObject);
         }
 
-        private void OnTriggerExit(Collider other)
-        {
-            var hitObject = other.gameObject;
-            TryUnstunObject(hitObject);
-        }
-
-        private void TryStunObject(GameObject objectToStun)
+        private void StunObject(GameObject objectToStun)
         {
             if (objectToStun.TryGetComponent(out Stunnable stunnableObject))
             {
-                stunnableObject.ApplyStun();
+                stunnableObject.ApplyStun(stunSeconds);
             }
             else
             {
@@ -29,7 +25,7 @@ namespace AttackScripts
             }
         }
 
-        private void TryUnstunObject(GameObject objectToUnstun)
+        private void UnstunObject(GameObject objectToUnstun)
         {
             if (objectToUnstun.TryGetComponent(out Stunnable stunnableObject))
             {

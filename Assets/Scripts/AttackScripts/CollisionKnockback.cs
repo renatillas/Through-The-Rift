@@ -5,7 +5,9 @@ namespace AttackScripts
 {
     public class CollisionKnockback : MonoBehaviour
     {
-        [SerializeField, Range(0, 10)] private float knockbackForce;
+        [SerializeField] private float force;
+        [SerializeField] private Transform origin;
+        [SerializeField] private float delay;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -17,8 +19,7 @@ namespace AttackScripts
         {
             if (objectToStun.TryGetComponent(out Knockbackable knockableObject))
             {
-                Vector3 origin = transform.position;
-                knockableObject.ApplyKnockback(origin, knockbackForce);
+                knockableObject.ApplyKnockback(origin.position, force, delay);
             }
             else
             {

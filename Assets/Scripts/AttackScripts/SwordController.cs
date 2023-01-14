@@ -10,11 +10,8 @@ namespace AttackScripts
         private Animator _animator;
         private ParticleSystem _particleSystem;
 
-        private BoxCollider _swordTriggerCollider;
-
         private void Awake()
         {
-            _swordTriggerCollider = GetComponent<BoxCollider>();
             _particleSystem = GetComponentInChildren<ParticleSystem>();
             _animator = GameObject.FindWithTag("Player").GetComponent<Animator>();
         }

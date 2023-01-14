@@ -1,13 +1,17 @@
-using System;
+using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace CharacterScripts
 {
     public class Health : MonoBehaviour
     {
         [SerializeField] private int startingHealth;
+
+        public UnityEvent OnDied;
         private Animator _animator;
-        private int _currentHealth;
+
+        [ReadOnly] private int _currentHealth;
 
         private void Awake()
         {
@@ -17,14 +21,14 @@ namespace CharacterScripts
         private void Start()
         {
             _currentHealth = startingHealth;
-            OnDied += () => _animator.SetTrigger("Death");
+            OnDied.AddListener(() => _animator.SetTrigger("Death"));
         }
 
-        public event Action OnDied;
 
         public void ChangeHealth(int amount)
         {
-            _currentHealth -= amount;
+            if (!enabled) return;
+            _currentHealth += amount;
             if (_currentHealth <= 0)
             {
                 Die();
