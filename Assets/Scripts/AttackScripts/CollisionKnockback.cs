@@ -6,8 +6,8 @@ namespace AttackScripts
     public class CollisionKnockback : MonoBehaviour
     {
         [SerializeField] private float force;
-        [SerializeField] private Transform origin;
         [SerializeField] private float delay;
+        [SerializeField] private Transform origin;
 
         private void OnTriggerEnter(Collider other)
         {

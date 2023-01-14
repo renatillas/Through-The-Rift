@@ -2,41 +2,68 @@ using UnityEngine;
 
 namespace CharacterScripts
 {
+    [RequireComponent(typeof(CharacterController))]
     public class CharacterMovement : MonoBehaviour
     {
-        [SerializeField] [Range(0, 10)] private float speed = 2f;
+        private const float Gravity = -9.8f;
+        [SerializeField] [Range(0, 10)] private float walkSpeed = 2f;
+        [SerializeField] [Range(0, 10)] private float runSpeed = 2f;
         [SerializeField] [Range(500, 1500)] private float rotationSpeed = 1000;
-        private Animator _animator;
+        private CharacterController _characterCtr;
 
-        private Rigidbody _rb;
+        private Vector3 _movementBuffer;
 
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody>();
-            _animator = GetComponent<Animator>();
+            _characterCtr = GetComponent<CharacterController>();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            _animator.SetFloat("Speed", _rb.velocity.magnitude);
+            Move();
         }
 
-        public void Move(Vector3 direction)
+        public void BufferKnockBack(Vector3 velocity)
         {
-            var velocity = speed * direction;
-            _rb.AddForce(velocity, ForceMode.VelocityChange);
-            float yVelocity = _rb.velocity.y;
-            Vector3 clampedVelocity = Vector3.ClampMagnitude(_rb.velocity, speed);
-            _rb.velocity = new Vector3(clampedVelocity.x, yVelocity, clampedVelocity.z);
-            RotateBody(direction);
+            _movementBuffer = new Vector3(velocity.x, 0f, velocity.z);
         }
 
-        private void RotateBody(Vector3 direction)
+        public Vector3 GetBodyCenter()
         {
-            if (direction != Vector3.zero)
+            return _characterCtr.center;
+        }
+
+        public void BufferWalk(Vector3 direction)
+        {
+            _movementBuffer = new Vector3(direction.x, 0, direction.z) * (walkSpeed * Time.deltaTime);
+        }
+
+        public void BufferRun(Vector3 direction)
+        {
+            _movementBuffer = new Vector3(direction.x, 0, direction.z) * (runSpeed * Time.deltaTime);
+        }
+
+        private bool IsGrounded()
+        {
+            return _characterCtr.isGrounded;
+        }
+
+        private void Move()
+        {
+            RotateBody();
+
+            if (IsGrounded()) _movementBuffer.y = -.5f;
+            else _movementBuffer.y = Gravity * Time.deltaTime;
+            _characterCtr.Move(_movementBuffer);
+            _movementBuffer = Vector3.zero;
+        }
+
+        private void RotateBody()
+        {
+            if (_movementBuffer.x != 0 || _movementBuffer.z != 0)
                 transform.rotation = Quaternion.RotateTowards(
                     transform.rotation,
-                    Quaternion.LookRotation(direction),
+                    Quaternion.LookRotation(new Vector3(_movementBuffer.x, 0, _movementBuffer.z)),
                     rotationSpeed * Time.fixedDeltaTime);
         }
     }

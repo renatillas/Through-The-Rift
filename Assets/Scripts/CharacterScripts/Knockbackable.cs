@@ -1,41 +1,31 @@
-using System.Collections;
 using UnityEngine;
 
 namespace CharacterScripts
 {
+    [RequireComponent(typeof(CharacterMovement))]
     public class Knockbackable : MonoBehaviour
     {
         [SerializeField] private float knockbackResistance;
-        private bool _knockedBack;
-        private Rigidbody _rb;
+
+        private CharacterMovement _characterMov;
+        private float _knockbackCounter;
 
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody>();
+            _characterMov = GetComponent<CharacterMovement>();
+        }
+
+        public void Update()
+        {
+            if (_knockbackCounter <= 0) _knockbackCounter = 0;
+            else _knockbackCounter -= Time.deltaTime;
         }
 
         public void ApplyKnockback(Vector3 origin, float magnitude, float secondsDelay)
         {
-            if (_knockedBack)
-            {
-                Debug.Log($"{gameObject} is already being knocked back.");
-                return;
-            }
-
-            _knockedBack = true;
-            Debug.Log($"{gameObject} is knocked back.");
-            _rb.velocity = Vector3.zero;
-            Vector3 direction = _rb.centerOfMass - origin;
-            _rb.AddForce(
-                direction * magnitude,
-                ForceMode.Impulse);
-            StartCoroutine(ResetKnockback(secondsDelay));
-        }
-
-        private IEnumerator ResetKnockback(float secondsDelay)
-        {
-            yield return new WaitForSeconds(secondsDelay);
-            _knockedBack = false;
+            _knockbackCounter = secondsDelay;
+            Vector3 velocity = magnitude * (transform.position - origin).normalized;
+            _characterMov.BufferKnockBack(velocity);
         }
     }
 }

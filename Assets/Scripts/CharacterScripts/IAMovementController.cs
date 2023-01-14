@@ -2,26 +2,28 @@ using UnityEngine;
 
 namespace CharacterScripts
 {
-    [RequireComponent(typeof(CharacterMovement), typeof(Stunnable))]
+    [RequireComponent(typeof(CharacterMovement))]
     public class IAMovementController : MonoBehaviour
     {
+        private bool _canMove;
         private CharacterMovement _characterMovement;
-        private Stunnable _stunnable;
         private Transform _transformDestination;
 
         private void Awake()
         {
             _characterMovement = GetComponent<CharacterMovement>();
-            _stunnable = GetComponent<Stunnable>();
             _transformDestination = GameObject.FindWithTag("Player").transform;
         }
 
+        private void Start()
+        {
+            _canMove = true;
+        }
+
+
         private void FixedUpdate()
         {
-            if (!_stunnable.IsStunned())
-            {
-                _characterMovement.Move(GetPlayerDirection());
-            }
+            if (_canMove) _characterMovement.BufferWalk(GetPlayerDirection());
         }
 
         private Vector3 GetPlayerDirection()
@@ -30,6 +32,11 @@ namespace CharacterScripts
             Vector3 direction = (playerPosition - transform.position).normalized;
             direction.y = 0f;
             return direction;
+        }
+
+        public void StopMoving()
+        {
+            _canMove = false;
         }
     }
 }
