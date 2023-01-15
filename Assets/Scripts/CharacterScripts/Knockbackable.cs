@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace CharacterScripts
@@ -21,11 +22,14 @@ namespace CharacterScripts
             else _knockbackCounter -= Time.deltaTime;
         }
 
-        public void ApplyKnockback(Vector3 origin, float magnitude, float secondsDelay)
+        public IEnumerator ApplyKnockback(Vector3 origin, float magnitude, float secondsDelay)
         {
             _knockbackCounter = secondsDelay;
             Vector3 velocity = magnitude * (transform.position - origin).normalized;
+            _characterMov.SetStunned();
             _characterMov.BufferKnockBack(velocity);
+            yield return new WaitForSeconds(secondsDelay);
+            _characterMov.SetUnstunned();
         }
     }
 }

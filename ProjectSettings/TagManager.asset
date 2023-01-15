@@ -9,6 +9,8 @@ TagManager:
   - Weapon
   - PlayerBody
   - Sword
+  - HealthBar
+  - StaminaBar
   layers:
   - Default
   - TransparentFX

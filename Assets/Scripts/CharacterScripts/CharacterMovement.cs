@@ -10,12 +10,18 @@ namespace CharacterScripts
         [SerializeField] [Range(0, 10)] private float runSpeed = 2f;
         [SerializeField] [Range(500, 1500)] private float rotationSpeed = 1000;
         private CharacterController _characterCtr;
+        private bool _isStunned;
 
         private Vector3 _movementBuffer;
 
         private void Awake()
         {
             _characterCtr = GetComponent<CharacterController>();
+        }
+
+        private void Start()
+        {
+            SetUnstunned();
         }
 
         private void LateUpdate()
@@ -25,21 +31,18 @@ namespace CharacterScripts
 
         public void BufferKnockBack(Vector3 velocity)
         {
-            _movementBuffer = new Vector3(velocity.x, 0f, velocity.z);
-        }
-
-        public Vector3 GetBodyCenter()
-        {
-            return _characterCtr.center;
+            _movementBuffer = new Vector3(velocity.x, velocity.magnitude, velocity.z) * Time.deltaTime;
         }
 
         public void BufferWalk(Vector3 direction)
         {
+            if (_isStunned) return;
             _movementBuffer = new Vector3(direction.x, 0, direction.z) * (walkSpeed * Time.deltaTime);
         }
 
         public void BufferRun(Vector3 direction)
         {
+            if (_isStunned) return;
             _movementBuffer = new Vector3(direction.x, 0, direction.z) * (runSpeed * Time.deltaTime);
         }
 
@@ -50,12 +53,27 @@ namespace CharacterScripts
 
         private void Move()
         {
-            RotateBody();
-
             if (IsGrounded()) _movementBuffer.y = -.5f;
             else _movementBuffer.y = Gravity * Time.deltaTime;
             _characterCtr.Move(_movementBuffer);
+            if (IsStunned()) return;
+            RotateBody();
             _movementBuffer = Vector3.zero;
+        }
+
+        public bool IsStunned()
+        {
+            return _isStunned;
+        }
+
+        public void SetStunned()
+        {
+            _isStunned = true;
+        }
+
+        public void SetUnstunned()
+        {
+            _isStunned = false;
         }
 
         private void RotateBody()

@@ -1,6 +1,8 @@
+using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace CharacterScripts
 {
@@ -12,22 +14,29 @@ namespace CharacterScripts
         private Animator _animator;
 
         [ReadOnly] private int _currentHealth;
+        private Slider _healthBar;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
+            _healthBar = gameObject.GetComponentsInChildren<Slider>().First(slider => slider.CompareTag("HealthBar"));
         }
 
         private void Start()
         {
             _currentHealth = startingHealth;
+            _healthBar.maxValue = startingHealth;
+            _healthBar.value = startingHealth;
             OnDied.AddListener(() => _animator.SetTrigger("Death"));
+            OnDied.AddListener(() => _healthBar.GetComponentInChildren<Image>().color = Color.grey);
         }
 
 
         public void ChangeHealth(int amount)
         {
             if (!enabled) return;
+
+            _healthBar.value += amount;
             _currentHealth += amount;
             if (_currentHealth <= 0)
             {

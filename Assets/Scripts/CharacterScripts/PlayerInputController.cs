@@ -5,21 +5,28 @@ namespace CharacterScripts
     [RequireComponent(typeof(CharacterMovement))]
     public class PlayerInputController : MonoBehaviour
     {
+        [SerializeField] private float runStamina;
+
         private Animator _animator;
         private CharacterMovement _characterMovement;
+        private Stamina _stamina;
 
         private void Awake()
         {
             _characterMovement = GetComponent<CharacterMovement>();
             _animator = GetComponent<Animator>();
+            _stamina = GetComponent<Stamina>();
         }
 
         private void Update()
         {
             if (IsMovementPressed())
             {
-                if (IsRunningPressed())
+                if (IsRunningPressed() && _stamina.HasStamina())
+                {
+                    _stamina.UseStamina(runStamina);
                     _characterMovement.BufferRun(GetMovementDir());
+                }
                 else
                     _characterMovement.BufferWalk(GetMovementDir());
             }
@@ -37,7 +44,7 @@ namespace CharacterScripts
             else if (!IsMovementPressed() && isWalking)
                 _animator.SetBool("isWalking", false);
 
-            if (IsMovementPressed() && IsRunningPressed() && !isRunning)
+            if (IsMovementPressed() && IsRunningPressed() && !isRunning && _stamina.HasStamina())
                 _animator.SetBool("isRunning", true);
             else if ((!IsMovementPressed() || !IsRunningPressed()) && isRunning)
                 _animator.SetBool("isRunning", false);

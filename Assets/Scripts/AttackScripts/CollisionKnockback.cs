@@ -6,7 +6,7 @@ namespace AttackScripts
     public class CollisionKnockback : MonoBehaviour
     {
         [SerializeField] private float force;
-        [SerializeField] private float delay;
+        [SerializeField] private float knockTime;
         [SerializeField] private Transform origin;
 
         private void OnTriggerEnter(Collider other)
@@ -19,11 +19,11 @@ namespace AttackScripts
         {
             if (objectToStun.TryGetComponent(out Knockbackable knockableObject))
             {
-                knockableObject.ApplyKnockback(origin.position, force, delay);
+                StartCoroutine(knockableObject.ApplyKnockback(origin.position, force, knockTime));
             }
             else
             {
-                Debug.Log($"{knockableObject} cannot be stunned.");
+                Debug.Log($"{knockableObject} cannot be knocked back.");
             }
         }
     }
