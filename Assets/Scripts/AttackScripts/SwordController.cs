@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AttackScripts
 {
-    [RequireComponent(typeof(CollisionDamage))]
+    [RequireComponent(typeof(CollisionCachedDamage))]
     public class SwordController : MonoBehaviour
     {
         [SerializeField] private float delay;

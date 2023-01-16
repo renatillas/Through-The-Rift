@@ -1,5 +1,4 @@
 using System.Linq;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -13,7 +12,7 @@ namespace CharacterScripts
         public UnityEvent OnDied;
         private Animator _animator;
 
-        [ReadOnly] private int _currentHealth;
+        private int _currentHealth;
         private Slider _healthBar;
 
         private void Awake()
