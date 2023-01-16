@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public class LookAtCameraUI : MonoBehaviour
+namespace General
 {
-    private void FixedUpdate()
+    public class LookAtCameraUI : MonoBehaviour
     {
-        transform.LookAt(transform.position + Camera.main.transform.forward);
+        private void FixedUpdate()
+        {
+            transform.LookAt(transform.position + Camera.main.transform.forward);
+        }
     }
 }

@@ -1,4 +1,4 @@
-using CharacterScripts;
+using EntityScripts;
 using UnityEngine;
 
 namespace AttackScripts

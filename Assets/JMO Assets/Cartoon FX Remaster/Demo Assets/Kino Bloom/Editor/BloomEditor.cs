@@ -21,25 +21,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-using UnityEngine;
-using UnityEditor;
 
-namespace Kino
+using UnityEditor;
+using UnityEngine;
+
+namespace JMO_Assets.Cartoon_FX_Remaster.Demo_Assets.Kino_Bloom.Editor
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(Bloom))]
-    public class BloomEditor : Editor
+    public class BloomEditor : UnityEditor.Editor
     {
+        static GUIContent _textThreshold = new GUIContent("Threshold (gamma)");
+        SerializedProperty _antiFlicker;
         BloomGraphDrawer _graph;
+        SerializedProperty _highQuality;
+        SerializedProperty _intensity;
+        SerializedProperty _radius;
+        SerializedProperty _softKnee;
 
         SerializedProperty _threshold;
-        SerializedProperty _softKnee;
-        SerializedProperty _radius;
-        SerializedProperty _intensity;
-        SerializedProperty _highQuality;
-        SerializedProperty _antiFlicker;
-
-        static GUIContent _textThreshold = new GUIContent("Threshold (gamma)");
 
         void OnEnable()
         {
@@ -56,7 +56,8 @@ namespace Kino
         {
             serializedObject.Update();
 
-            if (!serializedObject.isEditingMultipleObjects) {
+            if (!serializedObject.isEditingMultipleObjects)
+            {
                 EditorGUILayout.Space();
                 _graph.Prepare((Bloom)target);
                 _graph.DrawGraph();

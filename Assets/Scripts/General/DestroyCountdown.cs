@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class DestroyCountdown : MonoBehaviour
+namespace General
 {
-    [SerializeField] private float secondsToDestroy;
-
-    void Start()
+    public class DestroyCountdown : MonoBehaviour
     {
-        Destroy(gameObject, secondsToDestroy);
+        [SerializeField] private float secondsToDestroy;
+
+        void Start()
+        {
+            Destroy(gameObject, secondsToDestroy);
+        }
     }
 }

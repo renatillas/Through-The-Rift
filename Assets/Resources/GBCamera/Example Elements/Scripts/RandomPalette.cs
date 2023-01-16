@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Camara_GBA.GBCamera.Example_Elements.Scripts
+namespace Resources.GBCamera.Example_Elements.Scripts
 {
     namespace GBCamera
     {

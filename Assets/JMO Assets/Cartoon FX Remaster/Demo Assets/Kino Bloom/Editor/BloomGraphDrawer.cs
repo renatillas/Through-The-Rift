@@ -21,10 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-using UnityEngine;
-using UnityEditor;
 
-namespace Kino
+using UnityEditor;
+using UnityEngine;
+
+namespace JMO_Assets.Cartoon_FX_Remaster.Demo_Assets.Kino_Bloom.Editor
 {
     // Class used for drawing the brightness response curve
     public class BloomGraphDrawer
@@ -34,11 +35,11 @@ namespace Kino
         // Update internal state with a given bloom instance.
         public void Prepare(Bloom bloom)
         {
-            #if UNITY_5_6_OR_NEWER
+#if UNITY_5_6_OR_NEWER
             if (bloom.GetComponent<Camera>().allowHDR)
-            #else
+#else
             if (bloom.GetComponent<Camera>().hdr)
-            #endif
+#endif
             {
                 _rangeX = 6;
                 _rangeY = 1.5f;
@@ -104,6 +105,7 @@ namespace Kino
                         var clip = (_rectGraph.y - v1.y) / (v2.y - v1.y);
                         _curveVertices[vcount - 1] = v1 + (v2 - v1) * clip;
                     }
+
                     break;
                 }
             }

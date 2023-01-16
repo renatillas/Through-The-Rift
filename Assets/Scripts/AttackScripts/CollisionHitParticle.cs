@@ -1,19 +1,22 @@
 using General;
 using UnityEngine;
 
-public class CollisionHitParticle : MonoBehaviour
+namespace AttackScripts
 {
-    private void OnTriggerEnter(Collider other)
+    public class CollisionHitParticle : MonoBehaviour
     {
-        var hitObject = other.gameObject;
-        SpawnHitParticle(hitObject);
-    }
-
-    private void SpawnHitParticle(GameObject hitObject)
-    {
-        if (hitObject.TryGetComponent(out Hittable hittableObject))
+        private void OnTriggerEnter(Collider other)
         {
-            hittableObject.Hit();
+            var hitObject = other.gameObject;
+            SpawnHitParticle(hitObject);
+        }
+
+        private void SpawnHitParticle(GameObject hitObject)
+        {
+            if (hitObject.TryGetComponent(out Hittable hittableObject))
+            {
+                hittableObject.Hit();
+            }
         }
     }
 }
