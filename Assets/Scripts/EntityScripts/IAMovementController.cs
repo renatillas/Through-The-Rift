@@ -28,6 +28,7 @@ namespace EntityScripts
 
         private Vector3 GetPlayerDirection()
         {
+            if (_transformDestination == null) return Vector3.zero;
             Vector3 playerPosition = _transformDestination.position;
             Vector3 direction = (playerPosition - transform.position).normalized;
             direction.y = 0f;

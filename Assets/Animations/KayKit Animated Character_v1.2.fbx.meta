@@ -153,7 +153,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7451059
+      - time: 0.63601506
         functionName: OnAttackEndWind
         data: 
         objectReferenceParameter: {instanceID: 0}

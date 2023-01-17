@@ -6,7 +6,7 @@ namespace General
     {
         [SerializeField] private float smoothSpeed = 0.125f;
         [SerializeField] private Vector3 offset;
-
+        private Vector3 _desiredPosition;
         private Transform target;
 
         private void Awake()
@@ -16,8 +16,8 @@ namespace General
 
         private void LateUpdate()
         {
-            Vector3 desiredPosition = target.position + offset;
-            Vector3 smoothPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
+            if (target != null) _desiredPosition = target.position + offset;
+            Vector3 smoothPosition = Vector3.Lerp(transform.position, _desiredPosition, smoothSpeed * Time.deltaTime);
             transform.position = smoothPosition;
         }
     }
