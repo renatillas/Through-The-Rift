@@ -6,12 +6,13 @@ namespace EntityScripts
     public class CharacterMovement : MonoBehaviour
     {
         private const float Gravity = -9.8f;
+
         [SerializeField] [Range(0, 10)] private float walkSpeed = 2f;
         [SerializeField] [Range(0, 10)] private float runSpeed = 2f;
         [SerializeField] [Range(500, 1500)] private float rotationSpeed = 1000;
+
         private CharacterController _characterCtr;
         private bool _isStunned;
-
         private Vector3 _movementBuffer;
 
         private void Awake()
@@ -53,8 +54,9 @@ namespace EntityScripts
 
         private void Move()
         {
-            if (IsGrounded()) _movementBuffer.y = -.5f;
-            else _movementBuffer.y = Gravity * Time.deltaTime;
+            // Ponemos una velocidad en y de -0.5 cuando esta en el suelo para que no flote.
+            var fallMovement = IsGrounded() ? -0.5f : Gravity * Time.deltaTime;
+            _movementBuffer.y = fallMovement;
             _characterCtr.Move(_movementBuffer);
             if (IsStunned()) return;
             RotateBody();

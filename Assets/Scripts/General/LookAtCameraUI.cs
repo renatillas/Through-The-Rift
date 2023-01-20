@@ -4,9 +4,16 @@ namespace General
 {
     public class LookAtCameraUI : MonoBehaviour
     {
-        private void FixedUpdate()
+        private Camera _camera;
+
+        private void Awake()
         {
-            transform.LookAt(transform.position + Camera.main.transform.forward);
+            _camera = Camera.main;
+        }
+
+        private void Update()
+        {
+            transform.LookAt(transform.position + _camera.transform.forward);
         }
     }
 }

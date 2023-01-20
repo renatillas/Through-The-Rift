@@ -1,70 +1,72 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EntityScripts
 {
     [RequireComponent(typeof(CharacterMovement))]
     public class PlayerInputController : MonoBehaviour
     {
-        [SerializeField] private float runStamina;
-
+        [SerializeField] private float runStaminaPerSec;
         private Animator _animator;
         private CharacterMovement _characterMovement;
+        private Vector3 _currentMovement;
+
+        private Vector2 _currentMovementInput;
+        private bool _isMovementPressed;
+        private bool _isRunPressed;
+
+        private Input.Input _playerInput;
         private Stamina _stamina;
 
         private void Awake()
         {
+            _playerInput = new Input.Input();
             _characterMovement = GetComponent<CharacterMovement>();
             _animator = GetComponent<Animator>();
             _stamina = GetComponent<Stamina>();
+
+            _playerInput.CharacterControls.Move.started += OnMovementInput;
+            _playerInput.CharacterControls.Move.performed += OnMovementInput;
+            _playerInput.CharacterControls.Move.canceled += OnMovementInput;
+            _playerInput.CharacterControls.Run.started += OnRun;
+            _playerInput.CharacterControls.Run.canceled += OnRun;
         }
 
         private void Update()
         {
-            if (IsMovementPressed())
-            {
-                if (IsRunningPressed() && _stamina.UseStamina(runStamina))
-                {
-                    _characterMovement.BufferRun(GetMovementDir());
-                }
-                else
-                    _characterMovement.BufferWalk(GetMovementDir());
-            }
-
-            HandleAnimations();
+            if (_isRunPressed && _stamina.UseStamina(runStaminaPerSec)) _characterMovement.BufferRun(_currentMovement);
+            else if (_isMovementPressed) _characterMovement.BufferWalk(_currentMovement);
+            HandleAnimation();
         }
 
-        void HandleAnimations()
+
+        void OnEnable()
         {
-            bool isWalking = _animator.GetBool("isWalking");
-            bool isRunning = _animator.GetBool("isRunning");
-
-            if (IsMovementPressed() && !isWalking)
-                _animator.SetBool("isWalking", true);
-            else if (!IsMovementPressed() && isWalking)
-                _animator.SetBool("isWalking", false);
-
-            if (IsMovementPressed() && IsRunningPressed() && !isRunning && _stamina.HasStamina())
-                _animator.SetBool("isRunning", true);
-            else if ((!IsMovementPressed() || !IsRunningPressed()) && isRunning)
-                _animator.SetBool("isRunning", false);
+            _playerInput.CharacterControls.Enable();
         }
 
-        private static bool IsMovementPressed()
+        void OnDisable()
         {
-            return GetMovementDir().magnitude >= 0;
+            _playerInput.CharacterControls.Disable();
         }
 
-        private static bool IsRunningPressed()
+        private void OnRun(InputAction.CallbackContext context)
         {
-            return Input.GetButton("Run");
+            _isRunPressed = context.ReadValueAsButton();
         }
 
-        private static Vector3 GetMovementDir()
+        void OnMovementInput(InputAction.CallbackContext context)
         {
-            return new Vector3(
-                Input.GetAxis("Horizontal"),
-                0,
-                Input.GetAxis("Vertical")).normalized;
+            _currentMovementInput = context.ReadValue<Vector2>();
+            _currentMovement.x = _currentMovementInput.x;
+            _currentMovement.z = _currentMovementInput.y;
+            _isMovementPressed = _currentMovementInput.sqrMagnitude > 0;
+        }
+
+        void HandleAnimation()
+        {
+            _animator.SetBool("isWalking", _isMovementPressed && !_isRunPressed);
+            _animator.SetBool("isRunning", _isRunPressed);
         }
     }
 }

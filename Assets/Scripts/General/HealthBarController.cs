@@ -1,8 +1,9 @@
 using System.Linq;
+using EntityScripts;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EntityScripts
+namespace General
 {
     [RequireComponent(typeof(Health))]
     public class HealthBarController : MonoBehaviour

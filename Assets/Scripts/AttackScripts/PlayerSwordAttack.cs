@@ -31,8 +31,8 @@ namespace AttackScripts
         {
             while (true)
             {
-                _animator.SetTrigger("SwordAttack");
                 yield return new WaitForSeconds(delay);
+                _animator.SetTrigger("SwordAttack");
             }
         }
 

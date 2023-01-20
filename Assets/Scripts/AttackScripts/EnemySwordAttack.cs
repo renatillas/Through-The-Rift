@@ -9,6 +9,7 @@ namespace AttackScripts
 
         private Animator _animator;
         private Coroutine _bufferAttackAnimationRoutine;
+        private bool _isAttacking;
 
         private void Awake()
         {
@@ -23,18 +24,23 @@ namespace AttackScripts
 
         public void PlayerOnSight()
         {
-            if (_bufferAttackAnimationRoutine != null) StopCoroutine(_bufferAttackAnimationRoutine);
-            _bufferAttackAnimationRoutine = StartCoroutine(BufferAttackAnimation());
+            if (_isAttacking) return;
+            if (_bufferAttackAnimationRoutine == null)
+                _bufferAttackAnimationRoutine = StartCoroutine(BufferAttackAnimation());
         }
 
         public void PlayerOutOfSight()
         {
+            _isAttacking = false;
+            if (_bufferAttackAnimationRoutine == null) return;
             StopCoroutine(_bufferAttackAnimationRoutine);
+            _bufferAttackAnimationRoutine = null;
         }
 
         IEnumerator BufferAttackAnimation()
         {
-            while (true)
+            _isAttacking = true;
+            while (_isAttacking)
             {
                 _animator.SetTrigger("SwordAttack");
                 yield return new WaitForSeconds(WeaponCooldown);
