@@ -31,7 +31,7 @@ namespace EntityScripts
 
             _currentHealth += amount;
             onHealthChanged?.Invoke(amount);
-            if (_currentHealth <= 0)
+            if (IsDead())
             {
                 Die();
             }
@@ -45,6 +45,17 @@ namespace EntityScripts
         private void Die()
         {
             onDied?.Invoke();
+        }
+
+        public void InstaKill()
+        {
+            if (!IsDead())
+                ChangeHealth(-GetStartingHealth() * 1000);
+        }
+
+        public bool IsDead()
+        {
+            return _currentHealth <= 0;
         }
     }
 }

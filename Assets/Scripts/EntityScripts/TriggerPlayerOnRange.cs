@@ -5,21 +5,20 @@ namespace EntityScripts
 {
     public class TriggerPlayerOnRange : MonoBehaviour
     {
-        public UnityEvent playerOnRange;
-        public UnityEvent playerOutOfRange;
+        public UnityEvent playerEntersAttackRange;
+        public UnityEvent playerExitsAttackRange;
 
         private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("Player"))
-                playerOutOfRange.Invoke();
+                playerExitsAttackRange.Invoke();
         }
 
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Player is on range");
-                playerOnRange.Invoke();
+                playerEntersAttackRange.Invoke();
             }
         }
     }

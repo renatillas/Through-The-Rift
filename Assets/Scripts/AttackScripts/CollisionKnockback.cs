@@ -17,7 +17,7 @@ namespace AttackScripts
 
         private void TryKnockbackObject(GameObject objectToStun)
         {
-            if (objectToStun.TryGetComponent(out Knockbackable knockableObject))
+            if (objectToStun.TryGetComponent(out IKnockbackable knockableObject))
             {
                 StartCoroutine(knockableObject.ApplyKnockback(origin.position, force, knockTime));
             }

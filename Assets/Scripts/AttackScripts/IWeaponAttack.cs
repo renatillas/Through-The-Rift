@@ -2,6 +2,6 @@ namespace AttackScripts
 {
     internal interface IWeaponAttack
     {
-        float WeaponCooldown { get; set; }
+        float Cooldown { get; set; }
     }
 }

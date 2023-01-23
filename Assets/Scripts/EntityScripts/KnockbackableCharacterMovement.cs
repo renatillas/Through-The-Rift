@@ -4,12 +4,11 @@ using UnityEngine;
 namespace EntityScripts
 {
     [RequireComponent(typeof(CharacterMovement))]
-    public class Knockbackable : MonoBehaviour
+    public class KnockbackableCharacterMovement : MonoBehaviour, IKnockbackable
     {
         [SerializeField] private float knockbackResistance;
 
         private CharacterMovement _characterMov;
-        private float _knockbackCounter;
 
         private void Awake()
         {
@@ -18,13 +17,15 @@ namespace EntityScripts
 
         public void Update()
         {
-            if (_knockbackCounter <= 0) _knockbackCounter = 0;
-            else _knockbackCounter -= Time.deltaTime;
+            if (KnockbackCounter <= 0) KnockbackCounter = 0;
+            else KnockbackCounter -= Time.deltaTime;
         }
+
+        public float KnockbackCounter { get; private set; }
 
         public IEnumerator ApplyKnockback(Vector3 origin, float magnitude, float secondsDelay)
         {
-            _knockbackCounter = secondsDelay;
+            KnockbackCounter = secondsDelay;
             Vector3 velocity = magnitude * (transform.position - origin).normalized;
             _characterMov.SetStunned();
             _characterMov.BufferKnockBack(velocity);

@@ -28,11 +28,11 @@ namespace EntityScripts
             _staminaBar.value = maxStamina;
         }
 
-        public bool UseStamina(float amount)
+        public bool UseStamina(float amountStamina)
         {
-            if (_currentStamina - amount < 0) return false;
+            if (_currentStamina - amountStamina < 0) return false;
             if (_regenerationRoutine != null) StopCoroutine(_regenerationRoutine);
-            _currentStamina -= amount;
+            _currentStamina -= amountStamina;
             _staminaBar.value = _currentStamina;
             _regenerationRoutine = StartCoroutine(RegenerateStamina());
             return true;
@@ -48,6 +48,8 @@ namespace EntityScripts
                 _staminaBar.value = _currentStamina;
                 yield return new WaitForSeconds(regenerationDelay);
             }
+
+            _currentStamina = maxStamina;
         }
 
         public bool HasStamina()

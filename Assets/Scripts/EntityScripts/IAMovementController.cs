@@ -1,43 +1,54 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace EntityScripts
 {
-    [RequireComponent(typeof(CharacterMovement))]
     public class IAMovementController : MonoBehaviour
     {
+        [SerializeField] private float playerRange;
+        private NavMeshAgent _agent;
+        private Animator _animator;
         private bool _canMove;
-        private CharacterMovement _characterMovement;
         private Transform _transformDestination;
 
         private void Awake()
         {
-            _characterMovement = GetComponent<CharacterMovement>();
             _transformDestination = GameObject.FindWithTag("Player").transform;
+            _animator = GetComponent<Animator>();
         }
 
         private void Start()
         {
             _canMove = true;
+            _agent = GetComponent<NavMeshAgent>();
+            _agent.destination = _transformDestination.position;
         }
 
 
-        private void FixedUpdate()
+        private void Update()
         {
-            if (_canMove) _characterMovement.BufferWalk(GetPlayerDirection());
-        }
-
-        private Vector3 GetPlayerDirection()
-        {
-            if (_transformDestination == null) return Vector3.zero;
-            Vector3 playerPosition = _transformDestination.position;
-            Vector3 direction = (playerPosition - transform.position).normalized;
-            direction.y = 0f;
-            return direction;
+            if (_canMove && IsPlayerOnRange())
+            {
+                _agent.isStopped = false;
+                _animator.SetBool("Running", true);
+            }
+            else
+            {
+                _agent.isStopped = true;
+                _animator.SetBool("Running", false);
+            }
         }
 
         public void StopMoving()
         {
             _canMove = false;
+        }
+
+        private bool IsPlayerOnRange()
+        {
+            if (_transformDestination == null) return false;
+            var realDistance = Vector3.Distance(_transformDestination.position, transform.position);
+            return realDistance < playerRange;
         }
     }
 }

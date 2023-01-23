@@ -1,50 +1,55 @@
-using System.Collections;
 using UnityEngine;
 
 namespace AttackScripts
 {
     public class EnemySwordAttack : MonoBehaviour, IWeaponAttack
     {
-        [SerializeField] private float delay;
+        [SerializeField] private float cooldownSeconds;
 
         private Animator _animator;
-        private Coroutine _bufferAttackAnimationRoutine;
+        private Coroutine _attackCoroutine;
         private bool _isAttacking;
+        private float _timer;
 
         private void Awake()
         {
             _animator = GetComponentInParent<Animator>();
         }
 
-        public float WeaponCooldown
+        public void Start()
         {
-            get => delay;
-            set => delay = value;
+            _timer = cooldownSeconds;
         }
 
-        public void PlayerOnSight()
+        private void Update()
         {
-            if (_isAttacking) return;
-            if (_bufferAttackAnimationRoutine == null)
-                _bufferAttackAnimationRoutine = StartCoroutine(BufferAttackAnimation());
+            if (_timer > 0) _timer -= Time.deltaTime;
+            else
+            {
+                if (_isAttacking) Attack();
+                _timer = cooldownSeconds;
+            }
         }
 
-        public void PlayerOutOfSight()
+        public float Cooldown
         {
-            _isAttacking = false;
-            if (_bufferAttackAnimationRoutine == null) return;
-            StopCoroutine(_bufferAttackAnimationRoutine);
-            _bufferAttackAnimationRoutine = null;
+            get => cooldownSeconds;
+            set => cooldownSeconds = value;
         }
 
-        IEnumerator BufferAttackAnimation()
+        public void OnPlayerEntersAttackRange()
         {
             _isAttacking = true;
-            while (_isAttacking)
-            {
-                _animator.SetTrigger("SwordAttack");
-                yield return new WaitForSeconds(WeaponCooldown);
-            }
+        }
+
+        public void OnPlayerExitsAttackRange()
+        {
+            _isAttacking = false;
+        }
+
+        private void Attack()
+        {
+            _animator.SetTrigger("SwordAttack");
         }
     }
 }

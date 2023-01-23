@@ -6,7 +6,6 @@ namespace EntityScripts
     [RequireComponent(typeof(CharacterMovement))]
     public class PlayerInputController : MonoBehaviour
     {
-        [SerializeField] private float runStaminaPerSec;
         private Animator _animator;
         private CharacterMovement _characterMovement;
         private Vector3 _currentMovement;
@@ -16,14 +15,12 @@ namespace EntityScripts
         private bool _isRunPressed;
 
         private Input.Input _playerInput;
-        private Stamina _stamina;
 
         private void Awake()
         {
             _playerInput = new Input.Input();
             _characterMovement = GetComponent<CharacterMovement>();
             _animator = GetComponent<Animator>();
-            _stamina = GetComponent<Stamina>();
 
             _playerInput.CharacterControls.Move.started += OnMovementInput;
             _playerInput.CharacterControls.Move.performed += OnMovementInput;
@@ -34,7 +31,7 @@ namespace EntityScripts
 
         private void Update()
         {
-            if (_isRunPressed && _stamina.UseStamina(runStaminaPerSec)) _characterMovement.BufferRun(_currentMovement);
+            if (_isRunPressed) _characterMovement.BufferRun(_currentMovement);
             else if (_isMovementPressed) _characterMovement.BufferWalk(_currentMovement);
             HandleAnimation();
         }

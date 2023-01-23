@@ -10,13 +10,16 @@ namespace EntityScripts
         [SerializeField] [Range(0, 10)] private float walkSpeed = 2f;
         [SerializeField] [Range(0, 10)] private float runSpeed = 2f;
         [SerializeField] [Range(500, 1500)] private float rotationSpeed = 1000;
-
+        [SerializeField] private float runStaminaPerSec;
         private CharacterController _characterCtr;
         private bool _isStunned;
         private Vector3 _movementBuffer;
 
+        private Stamina _stamina;
+
         private void Awake()
         {
+            _stamina = GetComponent<Stamina>();
             _characterCtr = GetComponent<CharacterController>();
         }
 
@@ -43,7 +46,7 @@ namespace EntityScripts
 
         public void BufferRun(Vector3 direction)
         {
-            if (_isStunned) return;
+            if (_isStunned || !_stamina.UseStamina(runStaminaPerSec * Time.deltaTime)) return;
             _movementBuffer = new Vector3(direction.x, 0, direction.z) * (runSpeed * Time.deltaTime);
         }
 

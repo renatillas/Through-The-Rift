@@ -21,7 +21,7 @@ namespace AttackScripts
             StartCoroutine(UpdateAnimationSpeedPeriodically());
         }
 
-        public float WeaponCooldown
+        public float Cooldown
         {
             get => delay;
             set => delay = value;

@@ -5508,9 +5508,9 @@ GameObject:
   - component: {fileID: 7290609335803035741}
   - component: {fileID: 4812524846606922903}
   - component: {fileID: 280182904632842868}
-  - component: {fileID: 4114242124331985481}
   - component: {fileID: 2410389482815101019}
   - component: {fileID: 1500578521446592620}
+  - component: {fileID: 4114242124331985481}
   - component: {fileID: 6214171597771057575}
   m_Layer: 0
   m_Name: Enemy Broken Sword
@@ -5598,6 +5598,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.2163761, y: 0.41935033, z: 0.12876426}
   m_Center: {x: -0.0021986533, y: 0.4028448, z: 0.0000001560972}
+--- !u!114 &2410389482815101019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6469836108934976834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55bcf5f1aa384b6cba7f3345df343e8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownSeconds: 1
+--- !u!114 &1500578521446592620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6469836108934976834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46135698e8b7e604ba38aa8cddb26392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4114242124331985481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5611,31 +5636,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
---- !u!114 &2410389482815101019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6469836108934976834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55bcf5f1aa384b6cba7f3345df343e8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delay: 1
---- !u!114 &1500578521446592620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6469836108934976834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46135698e8b7e604ba38aa8cddb26392, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6214171597771057575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5662,15 +5662,15 @@ GameObject:
   - component: {fileID: 7080070603605323742}
   - component: {fileID: 3792411760823727524}
   - component: {fileID: 9217485844790906615}
-  - component: {fileID: 3199115244579636804}
-  - component: {fileID: 5553340201839234968}
   - component: {fileID: 4203959732427064841}
   - component: {fileID: 3191495906763380113}
   - component: {fileID: 4058412518224029945}
   - component: {fileID: 9056943136035235980}
-  - component: {fileID: 3449649919113473574}
   - component: {fileID: 3385806321935136346}
   - component: {fileID: 3023453165107819609}
+  - component: {fileID: 2218855984253077170}
+  - component: {fileID: 7156928246016255273}
+  - component: {fileID: 5930812698275251221}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Enemy
@@ -5725,12 +5725,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e891cb18703445b8a0ca13b8b2bfd3e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOnRange:
+  playerEntersAttackRange:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2410389482815101019}
         m_TargetAssemblyTypeName: AttackScripts.EnemySwordAttack, Assembly-CSharp
-        m_MethodName: PlayerOnSight
+        m_MethodName: OnPlayerEntersAttackRange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5740,12 +5740,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  playerOutOfRange:
+  playerExitsAttackRange:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2410389482815101019}
         m_TargetAssemblyTypeName: AttackScripts.EnemySwordAttack, Assembly-CSharp
-        m_MethodName: PlayerOutOfSight
+        m_MethodName: OnPlayerExitsAttackRange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5755,39 +5755,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!143 &3199115244579636804
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7569044777336108388}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.5
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &5553340201839234968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7569044777336108388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b42667f9694461082de6ffb731ed9ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 2
-  runSpeed: 2
-  rotationSpeed: 1000
 --- !u!114 &4203959732427064841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5800,6 +5767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc580a1ddf94f46b1dd9f400cf9300d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerRange: 10
 --- !u!114 &3191495906763380113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5812,7 +5780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7307dde55244c4780bb4756746c2622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 10
+  startingHealth: 1
   onDied:
     m_PersistentCalls:
       m_Calls:
@@ -5868,19 +5836,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e42394b6fe048c0a24fd4af524c0c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3449649919113473574
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7569044777336108388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f188b001d849435e84625127a1a3891c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knockbackResistance: 0
 --- !u!114 &3385806321935136346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5908,6 +5863,58 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 1, z: 1}
   m_Center: {x: 0, y: 1, z: 1}
+--- !u!54 &2218855984253077170
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7569044777336108388}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &7156928246016255273
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7569044777336108388}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: -0, y: 0.8432359, z: 0}
+--- !u!195 &5930812698275251221
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7569044777336108388}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 500
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &7958386361746579611
 GameObject:
   m_ObjectHideFlags: 0
