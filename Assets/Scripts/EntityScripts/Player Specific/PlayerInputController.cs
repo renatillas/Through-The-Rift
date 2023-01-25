@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace EntityScripts
+namespace EntityScripts.Player_Specific
 {
     [RequireComponent(typeof(CharacterMovement))]
     public class PlayerInputController : MonoBehaviour

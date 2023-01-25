@@ -3,14 +3,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EntityScripts
+namespace EntityScripts.Player_Specific
 {
     public class Stamina : MonoBehaviour
     {
         [SerializeField] private float maxStamina;
         [SerializeField] private float recoveryDelay;
         [SerializeField] private float regenerationStaminaPerSecond;
-        [SerializeField] private float regenerationDelay;
 
         private float _currentStamina;
         private Coroutine _regenerationRoutine;
@@ -43,10 +42,10 @@ namespace EntityScripts
             yield return new WaitForSeconds(recoveryDelay);
             while (_currentStamina < maxStamina)
             {
-                float staminaGainedPerTick = regenerationStaminaPerSecond * regenerationDelay;
-                _currentStamina += staminaGainedPerTick;
+                float staminaGainedPerFrame = regenerationStaminaPerSecond * Time.deltaTime;
+                _currentStamina += staminaGainedPerFrame;
                 _staminaBar.value = _currentStamina;
-                yield return new WaitForSeconds(regenerationDelay);
+                yield return null;
             }
 
             _currentStamina = maxStamina;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EntityScripts
+namespace EntityScripts.Player_Specific
 {
     [RequireComponent(typeof(CharacterController))]
     public class CharacterMovement : MonoBehaviour
@@ -46,7 +46,13 @@ namespace EntityScripts
 
         public void BufferRun(Vector3 direction)
         {
-            if (_isStunned || !_stamina.UseStamina(runStaminaPerSec * Time.deltaTime)) return;
+            if (_isStunned) return;
+            if (!_stamina.UseStamina(runStaminaPerSec * Time.deltaTime))
+            {
+                BufferWalk(direction);
+                return;
+            }
+
             _movementBuffer = new Vector3(direction.x, 0, direction.z) * (runSpeed * Time.deltaTime);
         }
 

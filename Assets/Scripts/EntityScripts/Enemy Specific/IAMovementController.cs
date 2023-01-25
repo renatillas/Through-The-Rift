@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace EntityScripts
+namespace EntityScripts.Enemy_Specific
 {
     public class IAMovementController : MonoBehaviour
     {
-        [SerializeField] private float playerRange;
+        [SerializeField] private float rangoDeBronca;
         private NavMeshAgent _agent;
         private Animator _animator;
         private bool _canMove;
@@ -15,18 +15,21 @@ namespace EntityScripts
         {
             _transformDestination = GameObject.FindWithTag("Player").transform;
             _animator = GetComponent<Animator>();
+            _agent = GetComponent<NavMeshAgent>();
+            _agent.isStopped = false;
         }
 
         private void Start()
         {
             _canMove = true;
-            _agent = GetComponent<NavMeshAgent>();
             _agent.destination = _transformDestination.position;
         }
 
 
         private void Update()
         {
+            if (_transformDestination == null) return;
+            _agent.destination = _transformDestination.position;
             if (_canMove && IsPlayerOnRange())
             {
                 _agent.isStopped = false;
@@ -46,9 +49,9 @@ namespace EntityScripts
 
         private bool IsPlayerOnRange()
         {
-            if (_transformDestination == null) return false;
-            var realDistance = Vector3.Distance(_transformDestination.position, transform.position);
-            return realDistance < playerRange;
+            if (_transformDestination == null || !_agent.hasPath) return false;
+            var realDistance = _agent.remainingDistance;
+            return realDistance < rangoDeBronca;
         }
     }
 }

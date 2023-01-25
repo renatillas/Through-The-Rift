@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace AttackScripts
+namespace AttackScripts.Player_Specific
 {
     public class PlayerSwordAttack : MonoBehaviour, IWeaponAttack
     {

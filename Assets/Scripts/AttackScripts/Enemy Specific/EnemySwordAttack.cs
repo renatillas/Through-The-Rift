@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AttackScripts
+namespace AttackScripts.Enemy_Specific
 {
     public class EnemySwordAttack : MonoBehaviour, IWeaponAttack
     {

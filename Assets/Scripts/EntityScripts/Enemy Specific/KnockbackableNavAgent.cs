@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
+using EntityScripts.Player_Specific;
 using UnityEngine;
+using UnityEngine.AI;
 
-namespace EntityScripts
+namespace EntityScripts.Enemy_Specific
 {
-    [RequireComponent(typeof(CharacterMovement))]
-    public class KnockbackableCharacterMovement : MonoBehaviour, IKnockbackable
+    [RequireComponent(typeof(NavMeshAgent))]
+    public class KnockbackableNavAgent : MonoBehaviour, IKnockbackable
     {
         [SerializeField] private float knockbackResistance;
 
@@ -25,12 +28,7 @@ namespace EntityScripts
 
         public IEnumerator ApplyKnockback(Vector3 origin, float magnitude, float secondsDelay)
         {
-            KnockbackCounter = secondsDelay;
-            Vector3 velocity = magnitude * (transform.position - origin).normalized;
-            _characterMov.SetStunned();
-            _characterMov.BufferKnockBack(velocity);
-            yield return new WaitForSeconds(secondsDelay);
-            _characterMov.SetUnstunned();
+            throw new NotImplementedException();
         }
     }
 }
